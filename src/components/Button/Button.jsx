@@ -17,4 +17,8 @@ class Button extends Component{
   }
 };
 
+Button.protoType = {
+  
+};
+
 export default Button;

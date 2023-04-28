@@ -16,4 +16,8 @@ class Loader extends Component{
   }
 };
 
+Loader.protoType = {
+  
+};
+
 export default Loader;

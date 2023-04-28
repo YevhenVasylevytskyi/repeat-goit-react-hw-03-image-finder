@@ -29,4 +29,8 @@ class Searchbar extends Component{
   }
 };
 
+Searchbar.protoType = {
+  
+};
+
 export default Searchbar;

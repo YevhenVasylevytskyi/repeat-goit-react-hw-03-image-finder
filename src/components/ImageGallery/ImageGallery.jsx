@@ -17,4 +17,8 @@ class ImageGallery extends Component{
   }
 };
 
+ImageGallery.protoType = {
+  
+};
+
 export default ImageGallery;

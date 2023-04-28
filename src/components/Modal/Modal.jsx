@@ -19,4 +19,8 @@ class Modal extends Component{
   }
 };
 
+Modal.protoType = {
+  
+};
+
 export default Modal;
