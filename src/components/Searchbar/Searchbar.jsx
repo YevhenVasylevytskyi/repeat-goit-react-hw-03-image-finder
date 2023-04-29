@@ -1,21 +1,14 @@
-import { Component } from "react";
 // import PropTypes from "prop-types";
 import s from "./Searchbar.module.css";
-import SearchForm from "components/SearchForm/SearchForm";
 
-class Searchbar extends Component{
-    
-  state = {
-    
-  };  
+const Searchbar = ({ children }) => {
 
-  render() {
-    return (
-      <header className={s.Searchbar}>
-        <SearchForm />
-        </header>
-    )
-  }
+  return (
+    <header className={s.Searchbar}>
+      {children}
+     </header>
+  )
+  
 };
 
 Searchbar.protoType = {

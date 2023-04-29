@@ -10,7 +10,7 @@ class ImageGalleryItem extends Component{
 
   render() {
     return (
-        <li class="gallery-item">
+        <li className="gallery-item">
         <img src="" alt="" />
         ABC
         </li>

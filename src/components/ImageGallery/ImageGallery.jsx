@@ -11,7 +11,7 @@ class ImageGallery extends Component{
 
   render() {
     return (
-        <ul class="gallery">
+        <ul className="gallery">
           <ImageGalleryItem />
         </ul>
     )
