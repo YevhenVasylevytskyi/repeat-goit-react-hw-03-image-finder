@@ -11,7 +11,8 @@ class ImageGalleryItem extends Component{
   render() {
     return (
         <li class="gallery-item">
-            <img src="" alt="" />
+        <img src="" alt="" />
+        ABC
         </li>
     )
   }

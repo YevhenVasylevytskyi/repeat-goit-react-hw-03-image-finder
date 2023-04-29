@@ -1,6 +1,7 @@
 import { Component } from "react";
 // import PropTypes from "prop-types";
-// import s from "./Searchbar.module.css";
+import s from "./Searchbar.module.css";
+import SearchForm from "components/SearchForm/SearchForm";
 
 class Searchbar extends Component{
     
@@ -10,20 +11,8 @@ class Searchbar extends Component{
 
   render() {
     return (
-      <header class="searchbar">
-        <form class="form">
-            <button type="submit" class="button">
-            <span class="button-label">Search</span>
-            </button>
-
-            <input
-            class="input"
-            type="text"
-            autocomplete="off"
-            autofocus
-            placeholder="Search images and photos"
-            />
-        </form>
+      <header className={s.Searchbar}>
+        <SearchForm />
         </header>
     )
   }
