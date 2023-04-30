@@ -12,25 +12,37 @@ class ImageGallery extends Component{
 
   state = {
     data: null,
-    loading: false
+    loading: false,
+    error: null
   };  
 
   componentDidUpdate(prevProps, prevState) {
     const query = this.props.searchQuery;
 
     if (prevProps.searchQuery !== this.props.searchQuery) {
-      this.setState({loading: true})
-      fetch(`${this.BASE_URL}?q=${query}&page=1&key=${this.APIKEY}&image_type=photo&orientation=horizontal&per_page=12`).then(res => res.json()).then(data => this.setState({data})).finally(this.setState({loading: true}))
+      this.setState({ loading: true, data: null  })
+      
+      fetch(`${this.BASE_URL}?q=${query}&page=1&key=${this.APIKEY}&image_type=photo&orientation=horizontal&per_page=12`)
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          }
+
+          Promise.reject(new Error(`Фото ${query} не знайдено`))
+        })
+        .then(data => this.setState({ data }))
+        .catch(error => this.setState({ error }))
+        .finally(this.setState({ loading: true }))
     }
   }
 
   render() {
-    const { data, loading } = this.state;    
+    const { data, loading, error } = this.state;    
     
     return (
       <>
-        
-        {loading && !data && <Loader />}
+        {error && <h2 className={s.notQuery}>{error.message}</h2>}
+        {loading && !data && !error && <Loader />}
         {!data && !loading && <h2 className={s.notQuery}>Введіть пошуковий запит</h2>}
         {data &&
           <ul className={s.ImageGallery}>
