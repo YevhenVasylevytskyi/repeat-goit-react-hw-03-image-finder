@@ -1,13 +1,20 @@
+import { ToastContainer } from 'react-toastify';
+import { Component } from "react";
 import Button from "./Button/Button";
 import Searchbar from "./Searchbar/Searchbar";
 import SearchForm from "./SearchForm/SearchForm";
 import ImageGallery from "./ImageGallery/ImageGallery";
-import { Component } from "react";
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
 
-  handleFormSubmit = query => {
-    console.log(query)
+  state = {
+    searchQuery: "",
+  }
+
+  handleFormSubmit = searchQuery => {
+    this.setState({searchQuery})
   }
 
   render() {
@@ -20,6 +27,9 @@ export class App extends Component {
         </Searchbar>
         <ImageGallery />
         <Button />
+        <ToastContainer
+          autoClose={3000}
+        />
       </>
     )
   }

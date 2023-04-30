@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { FiSearch } from "react-icons/fi";
+import { toast } from 'react-toastify';
 
 // import PropTypes from "prop-types";
 import s from "./SearchForm.module.css";
@@ -8,7 +9,7 @@ class SearchForm extends Component{
   APIKEY = "23839618-ad76d37922a5e5280d987750e";
 
   state = {
-    query: "",
+    searchQuery: "",
   };
   
   // componentDidMount() {
@@ -18,14 +19,18 @@ class SearchForm extends Component{
   // }
 
   handleChange = event => {
-    this.setState({ query: event.currentTarget.value.toLowerCase() })
-    // console.log(this.state.query)
+    this.setState({ searchQuery: event.currentTarget.value.toLowerCase() })
+    // console.log(this.state.searchQuery)
   }
 
   handleSubmit = event => {
     event.preventDefault();
 
-    this.props.onSubmit(this.state.query)
+    if (this.state.searchQuery.trim() === "") {
+      return toast.error("Введіть пошуковий запит");
+    }
+    this.props.onSubmit(this.state.searchQuery);
+    this.setState({ searchQuery: "" });
     }
     
   render() {
@@ -49,7 +54,7 @@ class SearchForm extends Component{
                 autoComplete="off"
                 autoFocus
                 placeholder="Search images and photos"
-              value={this.state.query}
+              value={this.state.searchQuery}
               onChange={this.handleChange}
               />
             </form>
