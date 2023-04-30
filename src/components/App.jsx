@@ -25,7 +25,7 @@ export class App extends Component {
             onSubmit={this.handleFormSubmit}
           />
         </Searchbar>
-        <ImageGallery />
+        <ImageGallery searchQuery={this.state.searchQuery} />
         <Button />
         <ToastContainer
           autoClose={3000}

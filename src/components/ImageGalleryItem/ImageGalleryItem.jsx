@@ -1,6 +1,6 @@
 import { Component } from "react";
 // import PropTypes from "prop-types";
-// import s from "./ImageGalleryItem.module.css";
+import s from "./ImageGalleryItem.module.css";
 
 class ImageGalleryItem extends Component{
     
@@ -9,11 +9,19 @@ class ImageGalleryItem extends Component{
   };  
 
   render() {
+    const item = this.props.item
+
     return (
-        <li className="gallery-item">
-        <img src="" alt="" />
-        ABC
-        </li>
+      <li
+        className={s.ImageGalleryItem}
+        // key={item.id}
+      >
+        <img
+          className={s.ImageGalleryItemImage}
+          src={item.webformatURL}
+          alt={item.tags}
+        />        
+      </li>
     )
   }
 };

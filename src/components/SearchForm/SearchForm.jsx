@@ -5,18 +5,11 @@ import { toast } from 'react-toastify';
 // import PropTypes from "prop-types";
 import s from "./SearchForm.module.css";
 
-class SearchForm extends Component{
-  APIKEY = "23839618-ad76d37922a5e5280d987750e";
+class SearchForm extends Component{  
 
   state = {
     searchQuery: "",
   };
-  
-  // componentDidMount() {
-  //   fetch(`https://pixabay.com/api/?q=cat&page=1&key=${this.APIKEY}&image_type=photo&orientation=horizontal&per_page=12`).then(res => res.json()).then(console.log)
-    
-    
-  // }
 
   handleChange = event => {
     this.setState({ searchQuery: event.currentTarget.value.toLowerCase() })
