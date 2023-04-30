@@ -1,23 +1,19 @@
-import { Component } from "react";
-// import PropTypes from "prop-types";
-// import s from "./Loader.module.css";
+import { RotatingLines } from 'react-loader-spinner';
+import s from "./Loader.module.css";
 
-class Loader extends Component{
-    
-  state = {
-    
-  };  
+const Loader = () => {   
 
-  render() {
     return (
-        <>
-        </>
-    )
-  }
-};
-
-Loader.protoType = {
-  
+      <div className={s.Loader}>
+        <RotatingLines          
+          strokeColor="#3f51b5"
+          strokeWidth="5"
+          animationDuration="0.75"
+          width="96"
+          visible={true}
+        />
+      </div>
+    )  
 };
 
 export default Loader;

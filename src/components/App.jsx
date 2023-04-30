@@ -1,6 +1,6 @@
 import { ToastContainer } from 'react-toastify';
 import { Component } from "react";
-import Button from "./Button/Button";
+// import Button from "./Button/Button";
 import Searchbar from "./Searchbar/Searchbar";
 import SearchForm from "./SearchForm/SearchForm";
 import ImageGallery from "./ImageGallery/ImageGallery";
@@ -26,7 +26,7 @@ export class App extends Component {
           />
         </Searchbar>
         <ImageGallery searchQuery={this.state.searchQuery} />
-        <Button />
+        {/* <Button /> */}
         <ToastContainer
           autoClose={3000}
         />
