@@ -12,49 +12,87 @@ class ImageGallery extends Component{
 
   state = {
     data: null,
-    loading: false,
-    error: null
+    // loading: false,
+    error: null,
+    status: 'idle'
   };  
 
   componentDidUpdate(prevProps, prevState) {
-    const query = this.props.searchQuery;
+    const {searchQuery} = this.props;
 
     if (prevProps.searchQuery !== this.props.searchQuery) {
-      this.setState({ loading: true, data: null  })
+      this.setState({ /*loading: true, data: null,*/ status: 'pending' })
       
-      fetch(`${this.BASE_URL}?q=${query}&page=1&key=${this.APIKEY}&image_type=photo&orientation=horizontal&per_page=12`)
+      fetch(`${this.BASE_URL}?q=${searchQuery}&page=1&key=${this.APIKEY}&image_type=photo&orientation=horizontal&per_page=12`)
         .then(response => {
           if (response.ok) {
             return response.json()
           }
 
-          Promise.reject(new Error(`Фото ${query} не знайдено`))
+          Promise.reject(new Error(`Фото ${searchQuery} не знайдено`))
         })
-        .then(data => this.setState({ data }))
-        .catch(error => this.setState({ error }))
-        .finally(this.setState({ loading: true }))
+        .then(data => this.setState({ data, status: 'resolved' }))
+        .catch(error => this.setState({ error, status: 'rejected' }))
+        // .finally(this.setState({ loading: true }))
     }
   }
 
   render() {
-    const { data, loading, error } = this.state;    
+    const {
+      data,
+      // loading,
+      error,
+      status
+    } = this.state;
+
+    const {searchQuery} = this.props;
     
-    return (
-      <>
-        {error && <h2 className={s.notQuery}>{error.message}</h2>}
-        {loading && !data && !error && <Loader />}
-        {!data && !loading && <h2 className={s.notQuery}>Введіть пошуковий запит</h2>}
-        {data &&
-          <ul className={s.ImageGallery}>
-            
-            {data.hits.map(item => (
-              <ImageGalleryItem item={item} key={item.id} />  
-            ))} 
-            
-          </ul>
+    if (status === 'idle') { 
+      return  <p className={s.notQuery}>Введіть пошуковий запит</p>
+    }
+
+    if (status === 'pending') {
+      return <Loader />
+    }
+
+    if (status === 'rejected') {
+      return <p className={s.notQuery}>{error.message}</p>
+    }
+
+    if (status === 'resolved') {
+      
+      if (data.hits.length === 0) {
+          return <p className={s.notQuery}>Фото {searchQuery} не знайдено</p>
         }
-      </>
-    )      
+            
+      return (
+        <ul ul className={s.ImageGallery} >
+            
+          {data.hits.map(item => (
+            <ImageGalleryItem item={item} key={item.id} />
+          ))} 
+                    
+        </ul >)             
+      
+    }
+
+
+    // return (
+    //   <>
+    //     {error && <p className={s.notQuery}>{error.message}</p>}
+    //     {loading && !data && !error && <Loader />}
+    //     {!data && !loading && <p className={s.notQuery}>Введіть пошуковий запит</p>}
+    //     {data &&
+    //       <ul className={s.ImageGallery}>
+            
+    //         {data.hits.map(item => (
+    //           <ImageGalleryItem item={item} key={item.id} />  
+    //         ))} 
+            
+    //       </ul>
+    //     }
+    //   </>
+    // )      
   }
 };
 
