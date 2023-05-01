@@ -4,14 +4,13 @@ import Loader from "components/Loader/Loader";
 import ErrorView from "./ErrorView";
 import NoPhotoView from "./NoPhotoView";
 import StartView from "./StartView";
+import { FetchPhoto } from "../../serviсes/ApiService"
 
 
 // import PropTypes from "prop-types";
 import s from "./ImageGallery.module.css";
 
 class ImageGallery extends Component{
-  BASE_URL = "https://pixabay.com/api/"
-  APIKEY = "23839618-ad76d37922a5e5280d987750e";
 
   state = {
     data: null,
@@ -21,19 +20,13 @@ class ImageGallery extends Component{
   };  
 
   componentDidUpdate(prevProps, prevState) {
-    const {searchQuery} = this.props;
+    const prevQuery = prevProps.searchQuery;
+    const nextQuery = this.props.searchQuery;
 
-    if (prevProps.searchQuery !== this.props.searchQuery) {
+    if (prevQuery !== nextQuery) {
       this.setState({ /*loading: true, data: null,*/ status: 'pending' })
       
-      fetch(`${this.BASE_URL}?q=${searchQuery}&page=1&key=${this.APIKEY}&image_type=photo&orientation=horizontal&per_page=12`)
-        .then(response => {
-          if (response.ok) {
-            return response.json()
-          }
-
-          Promise.reject(new Error(`Фото ${searchQuery} не знайдено`))
-        })
+      FetchPhoto(nextQuery)
         .then(data => this.setState({ data, status: 'resolved' }))
         .catch(error => this.setState({ error, status: 'rejected' }))
         // .finally(this.setState({ loading: true }))
