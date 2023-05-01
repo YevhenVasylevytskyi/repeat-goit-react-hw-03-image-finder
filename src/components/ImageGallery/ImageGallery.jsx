@@ -1,7 +1,10 @@
 import { Component } from "react";
 import ImageGalleryItem from "components/ImageGalleryItem/ImageGalleryItem";
 import Loader from "components/Loader/Loader";
-// import { RotatingLines } from 'react-loader-spinner';
+import ErrorView from "./ErrorView";
+import NoPhotoView from "./NoPhotoView";
+import StartView from "./StartView";
+
 
 // import PropTypes from "prop-types";
 import s from "./ImageGallery.module.css";
@@ -48,7 +51,7 @@ class ImageGallery extends Component{
     const {searchQuery} = this.props;
     
     if (status === 'idle') { 
-      return  <p className={s.notQuery}>Введіть пошуковий запит</p>
+      return  <StartView />
     }
 
     if (status === 'pending') {
@@ -56,17 +59,17 @@ class ImageGallery extends Component{
     }
 
     if (status === 'rejected') {
-      return <p className={s.notQuery}>{error.message}</p>
+      return <ErrorView message={ error.message } />
     }
 
     if (status === 'resolved') {
       
       if (data.hits.length === 0) {
-          return <p className={s.notQuery}>Фото {searchQuery} не знайдено</p>
+        return <NoPhotoView searchQuery={ searchQuery } />
         }
             
       return (
-        <ul ul className={s.ImageGallery} >
+        <ul className={s.ImageGallery} >
             
           {data.hits.map(item => (
             <ImageGalleryItem item={item} key={item.id} />
