@@ -4,8 +4,7 @@ import Loader from "components/Loader/Loader";
 import ErrorView from "./ErrorView";
 import NoPhotoView from "./NoPhotoView";
 import StartView from "./StartView";
-import { FetchPhoto } from "../../serviсes/ApiService"
-
+import { FetchPhoto } from "../../serviсes/ApiService";
 
 // import PropTypes from "prop-types";
 import s from "./ImageGallery.module.css";
@@ -68,7 +67,8 @@ class ImageGallery extends Component{
             <ImageGalleryItem item={item} key={item.id} />
           ))} 
                     
-        </ul >)             
+        </ul >
+      )             
       
     }
 
