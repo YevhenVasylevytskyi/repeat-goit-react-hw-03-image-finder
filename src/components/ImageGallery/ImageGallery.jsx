@@ -4,7 +4,8 @@ import Loader from "components/Loader/Loader";
 import ErrorView from "./ErrorView";
 import NoPhotoView from "./NoPhotoView";
 import StartView from "./StartView";
-import { FetchPhoto } from "../../serviсes/ApiService";
+import Button from "components/Button/Button";
+import ApiService from "../../serviсes/ApiService";
 
 // import PropTypes from "prop-types";
 import s from "./ImageGallery.module.css";
@@ -12,10 +13,11 @@ import s from "./ImageGallery.module.css";
 class ImageGallery extends Component{
 
   state = {
-    data: null,
+    cards: [],
     // loading: false,
     error: null,
-    status: 'idle'
+    status: 'idle',
+    page: 1,
   };  
 
   componentDidUpdate(prevProps, prevState) {
@@ -23,18 +25,55 @@ class ImageGallery extends Component{
     const nextQuery = this.props.searchQuery;
 
     if (prevQuery !== nextQuery) {
-      this.setState({ /*loading: true, data: null,*/ status: 'pending' })
+      this.setState({ /*loading: true, cards: null,*/ status: 'pending' })
       
-      FetchPhoto(nextQuery)
-        .then(data => this.setState({ data, status: 'resolved' }))
+      ApiService(nextQuery, 1)
+        .then(result => {
+        if (result.hits.length !== 0) {
+          return this.setState({
+            cards: result.hits,
+            status: 'resolved',
+            page: 1,
+          });
+        }
+
+        return this.setState({ cards: result.hits, status: 'rejected' });
+      })
         .catch(error => this.setState({ error, status: 'rejected' }))
         // .finally(this.setState({ loading: true }))
     }
   }
 
+  loadMore = () => {
+    const nextSearch = this.props.searchQuery;
+    const { page } = this.state;
+    this.setState({ status: 'pending' });
+
+    ApiService(nextSearch, page + 1)
+      .then(result => {
+        return this.setState(prevState => {
+          return {
+            cards: [...prevState.cards, ...result.hits],
+            status: 'resolved',
+            page: prevState.page + 1,
+          };
+        });
+      })
+      .finally(() => {
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth',
+          });
+        }, 100);
+      });
+    // console.log("this.state.page", this.state.page);
+  };
+
+
   render() {
     const {
-      data,
+      cards,
       // loading,
       error,
       status
@@ -47,7 +86,16 @@ class ImageGallery extends Component{
     }
 
     if (status === 'pending') {
-      return <Loader />
+      return (
+        <>
+          <ul className={s.ImageGallery}>
+            {cards.map(item => (
+              <ImageGalleryItem item={item} key={item.id} />
+            ))} 
+          </ul>
+          <Loader />
+        </>
+      );
     }
 
     if (status === 'rejected') {
@@ -56,18 +104,22 @@ class ImageGallery extends Component{
 
     if (status === 'resolved') {
       
-      if (data.hits.length === 0) {
+      if (cards.length === 0) {
         return <NoPhotoView searchQuery={ searchQuery } />
         }
             
       return (
-        <ul className={s.ImageGallery} >
-            
-          {data.hits.map(item => (
-            <ImageGalleryItem item={item} key={item.id} />
-          ))} 
-                    
-        </ul >
+        <>
+          <ul className={s.ImageGallery} >
+              
+            {cards.map(item => (
+              <ImageGalleryItem item={item} key={item.id} />
+            ))} 
+                      
+          </ul >
+
+          <Button loadMore={this.loadMore} />
+        </>
       )             
       
     }
